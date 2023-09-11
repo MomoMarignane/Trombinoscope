@@ -1,5 +1,3 @@
-// CallWeatherApi.js
-
 import axios from 'axios';
 
 const fetchWeatherData = async (city) => {

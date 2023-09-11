@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback, ScrollView, Image, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback, ScrollView, Image, ImageBackground, Animated } from 'react-native';
 import axios from 'axios';
 import { Buffer } from 'buffer';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState('');
   const [userDataWithImages, setUserDataWithImages] = useState([]);
+  const [cardOpacities, setCardOpacities] = useState([]);
+
+  const scrollY = new Animated.Value(0);
 
   const fetchUsers = async () => {
     try {
@@ -36,8 +40,6 @@ const SearchScreen = () => {
           );
 
           const imageBuffer = imageResponse.data;
-          // const imageBlob = new Blob([imageBuffer], { type: 'image/png' });
-          // const imageUri = URL.createObjectURL(imageBlob);
           const base64Image = Buffer.from(imageBuffer, 'binary').toString('base64');
           const imageUri = `data:image/png;base64,${base64Image}`;
           return {
@@ -46,7 +48,6 @@ const SearchScreen = () => {
           };
         } catch (error) {
           console.error(`Erreur lors de la récupération de l'image pour l'utilisateur ${user.id}`, error);
-          // Gérez les erreurs ici, par exemple, en assignant une URL d'image par défaut
           return {
             ...user,
             imageUri: 'URL_PAR_DEFAUT',
@@ -56,6 +57,10 @@ const SearchScreen = () => {
 
       const userDataWithImages = await Promise.all(userDataWithImagesPromises);
       setUserDataWithImages(userDataWithImages);
+
+      // Mettez à jour le tableau d'opacités chaque fois que les données d'utilisateur changent
+      const newOpacities = userDataWithImages.map(() => new Animated.Value(1));
+      setCardOpacities(newOpacities);
     } catch (error) {
       console.error('user error', error);
     }
@@ -70,41 +75,63 @@ const SearchScreen = () => {
     return userName.includes(searchText.toLowerCase());
   });
 
+  const handleScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+    { useNativeDriver: false }
+  );
+
   return (
     <ImageBackground
-    source={require('../assets/backgroundApp.png')} // Spécifiez le chemin de votre image
-    style={{ flex: 1, position: 'fixed'}}
-   >
-
-    <ScrollView style={styles.userList}>
-      <Text style={styles.title}>Search 🔍</Text>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.container}>
-          <View style={styles.searchBar}>
-            <TextInput
-              style={styles.input}
-              placeholder="Search..."
-              onChangeText={(text) => setSearchText(text)}
-              value={searchText}
+      source={require('../assets/backgroundApp.png')}
+      style={{ flex: 1, position: 'fixed' }}
+    >
+      <ScrollView
+        style={styles.userList}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+      >
+        <Text style={styles.title}>Search 🔍</Text>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <View style={styles.container}>
+            <View style={styles.searchBar}>
+              <TextInput
+                style={styles.input}
+                placeholder="Search..."
+                onChangeText={(text) => setSearchText(text)}
+                value={searchText}
               />
-          </View>
-          {
-            searchText !== '' ? (
+            </View>
+            {searchText !== '' ? (
               filteredUsers.map((user, index) => (
-                <View style={styles.cardContainer} key={user.id}>
+                <Animated.View
+                  style={[styles.cardContainer, { opacity: cardOpacities[index] }]}
+                  key={user.id}
+                >
                   <View style={styles.card}>
-                    <Image source={{ uri: user.imageUri.toString() }} style={{ width: 150, height: 150, borderRadius: 75 }} />
-                    <Text style={styles.name}>{user.name}</Text>
-                    <Text style={styles.age}>{user.email} email: </Text>
-                    <Text style={styles.age}>{user.surname} surname: </Text>
+                    <Image
+                      source={{ uri: user.imageUri.toString() }}
+                      style={{ width: 100, height: 100, borderRadius: 25, right: 38, bottom: 35 }}
+                    />
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', bottom: 120 }}>
+                      <Icon name="user" size={20} color="white" style={{left: 49, bottom: 15}}/>
+                      <Text style={{ bottom: 15, left: 55, color: 'white', fontSize: 20, textAlign: 'center' }}>{user.name}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', bottom: 120 }}>
+                      <Icon name="id-card" size={20} color="white" style={{left: 49}}/>
+                      <Text style={{ left: 55, color: 'white', fontSize: 20, textAlign: 'center' }}>{user.surname}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', bottom: 120 }}>
+                      <Icon name="envelope" size={20} color="white" style={{left: 49, top: 15}}/>
+                      <Text style={{ top: 15, left: 55, color: 'white', fontSize: 20, textAlign: 'center' }}>{user.email}</Text>
+                    </View>
                   </View>
-                </View>
-              ))) : null
-            }
-        </View>
-      </TouchableWithoutFeedback>
-    </ScrollView>
-  </ImageBackground>
+                </Animated.View>
+              ))
+            ) : null}
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
@@ -123,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0)',
     width: '100%',
     top: 40,
-    marginBottom: 240,
+    marginBottom: 90,
   },
   input: {
     flex: 1,
@@ -137,38 +164,26 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    top: 20, // Ajustez cette valeur selon vos besoins
+    top: 20,
     left: 168
-  },
-  userItem: {
-    fontSize: 18,
-    marginVertical: 8,
-    bottom: 200,
-    height: 300,
-    textAlign:'center',
   },
   userList: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.15)',
-    // minHeight: '100%',
   },
-
   cardContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    //height:
   },
-
   card: {
-    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    backgroundColor: 'rgba(0, 0, 0, 0.65)',
     borderRadius: 10,
-    //height: '0%',
-    width: '0%',
+    width: 375,
+    height: 133,
     padding: 50,
-    marginBottom: 170,
+    marginBottom: 50,
   },
-
 });
 
 export default SearchScreen;

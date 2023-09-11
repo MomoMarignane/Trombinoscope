@@ -61,7 +61,7 @@ const FeedScreen = () => {
 
   return (
     <ImageBackground
-    source={require('../assets/backgroundApp.png')} // Spécifiez le chemin de votre image
+    source={require('../assets/backgroundApp.png')}
     style={{ flex: 1, position: 'fixed'}}
    >
 
