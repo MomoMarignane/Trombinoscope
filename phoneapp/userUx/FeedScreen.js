@@ -18,24 +18,6 @@ const FeedScreen = () => {
   const [userCity, setUserCity] = useState('');
   const [isCityModalVisible, setIsCityModalVisible] = useState(false);
 
-  useEffect(() => {
-    const fetchDateTime = async () => {
-      try {
-        const response = await axios.get(
-          'http://worldclockapi.com/api/json/utc/now'
-        );
-        const { currentDateTime } = response.data;
-        setCurrentDateTime(currentDateTime);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching date and time', error);
-        setLoading(false);
-      }
-    };
-
-    fetchDateTime();
-  }, []);
-
   const handleAddAPI = () => {
     setIsModalVisible(true);
   };
@@ -172,10 +154,6 @@ const styles = StyleSheet.create({
     borderRadius: 59,
     alignSelf: 'flex-start',
     left: 152,
-    shadowColor: 'rgba(0, 0, 0, 0.2)',
-    shadowOffset: { width: 3, height: 5 },
-    shadowRadius: 4,
-    shadowOpacity: 1,
   },
   buttonText: {
     color: 'white',
@@ -206,10 +184,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 16,
-    shadowColor: 'rgba(0, 0, 0, 0.2)',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    shadowOpacity: 1,
     width: '51%',
     top: 15,
     left: 98,
@@ -235,10 +209,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 16,
     width: '80%',
-    shadowColor: 'rgba(0, 0, 0, 0.2)',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    shadowOpacity: 1,
   },
   cityModalTitle: {
     fontSize: 16,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback, ScrollView, Image, ImageBackground } from 'react-native';
 import axios from 'axios';
+import { Buffer } from 'buffer';
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState('');
@@ -35,9 +36,10 @@ const SearchScreen = () => {
           );
 
           const imageBuffer = imageResponse.data;
-          const imageBlob = new Blob([imageBuffer], { type: 'image/png' });
-          const imageUri = URL.createObjectURL(imageBlob);
-
+          // const imageBlob = new Blob([imageBuffer], { type: 'image/png' });
+          // const imageUri = URL.createObjectURL(imageBlob);
+          const base64Image = Buffer.from(imageBuffer, 'binary').toString('base64');
+          const imageUri = `data:image/png;base64,${base64Image}`;
           return {
             ...user,
             imageUri,
@@ -91,8 +93,8 @@ const SearchScreen = () => {
               filteredUsers.map((user, index) => (
                 <View key={user.id} style={{ flex: 1 }}>
                   <Image
-                    source={{ uri: user.imageUri }}
-                    onError={(e) => console.log("Erreur de chargement d'image", e)}
+                    source={{ uri: user.imageUri.toString() }}
+                    // onError={(e) => console.log("Erreur de chargement d'image", e)}
                     style={{ width: 150, height: 150, borderRadius: 70, top: 30, left: 6}}
                     />
                   <Text key={index} style={styles.userItem}>
