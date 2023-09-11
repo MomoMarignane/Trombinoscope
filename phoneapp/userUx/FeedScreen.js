@@ -64,30 +64,33 @@ const FeedScreen = () => {
     source={require('../assets/backgroundApp.png')}
     style={{ flex: 1, position: 'fixed'}}
    >
-
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleAddAPI}>
-        <Text style={styles.buttonText}>Add Widget 🛒</Text>
+        <Text style={styles.buttonText}>Add Widget 📲</Text>
       </TouchableOpacity>
       <ScrollView>
-        {showWeatherText && (
-          <View style={styles.weatherWidget}>
-            <Text style={styles.weatherText}>{`Météo à ${city}: ${weatherData?.weather[0].description || ''}`}</Text>
-            <TouchableOpacity onPress={handleOpenCityModal}>
-              <Text style={styles.changeCityText}>Changer de ville</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        {showMapsText && (
-          <Text>Map</Text>
+        <View style={styles.widgetsContainer}>
+          {showWeatherText && (
+            <View style={styles.weatherWidget}>
+              <Text style={styles.weatherText}>{`Météo à ${city}: ${weatherData?.weather[0].description || ''}`}</Text>
+              <TouchableOpacity onPress={handleOpenCityModal}>
+                <Text style={styles.changeCityText}>Changer de ville</Text>
+              </TouchableOpacity>
+            </View>
           )}
+          {showMapsText && (
+            <View style={styles.mapsWidget}>
+              <Text>Map</Text>
+            </View>
+          )}
+        </View>
       </ScrollView>
       <Modal
         visible={isModalVisible}
         transparent={true}
         animationType="fade"
         onRequestClose={closeModal}
-        >
+      >
         <TouchableWithoutFeedback onPress={closeModal}>
           <View style={styles.modalContainer}>
             <View style={styles.titleContainer}>
@@ -105,7 +108,7 @@ const FeedScreen = () => {
         transparent={true}
         animationType="fade"
         onRequestClose={() => setIsCityModalVisible(false)}
-        >
+      >
         <TouchableWithoutFeedback onPress={() => setIsCityModalVisible(false)}>
           <View style={styles.cityModalContainer}>
             <View style={styles.cityModal}>
@@ -115,12 +118,12 @@ const FeedScreen = () => {
                 value={userCity}
                 onChangeText={(text) => setUserCity(text)}
                 placeholder="Nom de la ville"
-                />
+              />
               <View style={styles.cityModalButtons}>
                 <TouchableOpacity
                   style={styles.cityModalButton}
                   onPress={() => setIsCityModalVisible(false)}
-                  >
+                >
                   <Text style={styles.cityModalButtonText}>Annuler</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -129,7 +132,7 @@ const FeedScreen = () => {
                     setCity(userCity);
                     setIsCityModalVisible(false);
                   }}
-                  >
+                >
                   <Text style={styles.cityModalButtonText}>Confirmer</Text>
                 </TouchableOpacity>
               </View>
@@ -149,15 +152,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.15)',
   },
   button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 59,
+    backgroundColor: 'rgba(60, 38, 80, 0.8)',
+    paddingTop: 20,
+    paddingLeft: 18,
+    borderRadius: 15,
     alignSelf: 'flex-start',
-    left: 152,
+    left: 135,
+    height: 60,
+    width: 150,
+    marginBottom: 10,
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+    fontSize: 20,
   },
   modalContainer: {
     flex: 1,
@@ -180,13 +188,24 @@ const styles = StyleSheet.create({
     bottom: 450,
     borderRadius: 20,
   },
+  widgetsContainer: {
+    flexDirection: 'row', // Alignement horizontal
+    flexWrap: 'wrap', // Passage à la ligne automatique
+    justifyContent: 'flex-start', // Commence à gauche
+  },
   weatherWidget: {
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 16,
-    width: '51%',
-    top: 15,
-    left: 98,
+    width: '45%', // Largeur de 45% pour laisser de l'espace entre les widgets
+    margin: 5, // Marge entre les widgets
+  },
+  mapsWidget: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 16,
+    width: '45%', // Largeur de 45% pour laisser de l'espace entre les widgets
+    margin: 5, // Marge entre les widgets
   },
   weatherText: {
     fontSize: 16,

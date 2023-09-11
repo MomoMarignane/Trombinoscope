@@ -38,6 +38,8 @@ export default function HomeScreen() {
       )}
       scrollEventThrottle={16}
     >
+      <View style={{flex: 1, borderRadius: 15}}>
+
     <Animated.View style={[styles.parallaxText, { opacity: textOpacity }]}>
       <Animated.Text style={[{ fontSize: textSize }, styles.infoText]}>
         Welcome to Trombini !{'\n'}The future of business experience.
@@ -46,6 +48,7 @@ export default function HomeScreen() {
     <Animated.View style={[{ opacity: signInOpacity }]}>
       <SignInScreen />
     </Animated.View>
+      </View>
   </ScrollView>
 </ImageBackground>
 
@@ -64,9 +67,12 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   infoText: {
+    borderRadius: 15,
+    width: 400,
     marginTop: '50%',
-    fontSize: 33,
-    color: 'white',
+    fontSize: 40,
+    color: 'rgba(60, 38, 80, 1)',
     textAlign: 'center',
+    fontWeight: 'bold',
   },
 });

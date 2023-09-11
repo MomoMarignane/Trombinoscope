@@ -53,9 +53,9 @@ export default function SignInScreen() {
         <Text style={styles.title}>Connexion</Text>
         <View style={styles.contentContainer}>
         <TextInput
-          style={[styles.input, { color: 'black' }]}
+          style={[styles.input, { color: 'white' }]}
           placeholder="Mail"
-          placeholderTextColor="gray"
+          placeholderTextColor="rgba(255, 255, 255, 0.4)"
           onChangeText={(text) => setEmail(text)}
           value={Email}
         />
@@ -63,7 +63,7 @@ export default function SignInScreen() {
           <TextInput
             style={styles.passwordInput}
             placeholder="Password"
-            placeholderTextColor="grey"
+            placeholderTextColor="rgba(255, 255, 255, 0.4)"
             secureTextEntry={!isPasswordVisible}
             onChangeText={(text) => setPassword(text)}
             value={password}
@@ -78,7 +78,7 @@ export default function SignInScreen() {
             />
           </TouchableOpacity>
         </View>
-        <Button title="Sign In!" onPress={handleSignIn} />
+        <Button title="Sign In!" onPress={handleSignIn} style={{color: 'white', textDecorationLine: 'underline'}}/>
       </View>
       </View>
     </TouchableWithoutFeedback>
@@ -93,25 +93,26 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: '80%',
     marginTop: '-350%',
+    color: 'white',
   },
   contentContainer: {
-    backgroundColor: 'white',
-    borderRadius: 10,
+    backgroundColor: 'rgba(60, 38, 80, 0.9)',
+    borderRadius: 20,
     padding: 16,
-    width: '80%',
+    width: '77%',
   },
   title: {
-    fontSize: 30,
+    fontSize: 40,
     marginTop: '450%',
     marginBottom: '5%',
-    color: 'rgb(255, 97, 0)',
+    color: 'rgba(60, 38, 80, 1))',
     fontWeight: 'bold',
     textAlign: 'center',
     textTransform: 'uppercase',
     letterSpacing: 2.5,
   },
   input: {
-    width: '70%',
+    width: '90%',
     height: 40,
     borderColor: 'black',
     borderRadius: 50,
@@ -119,13 +120,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingLeft: 8,
-    marginLeft: '14.5%',
-    color: '#ffffff',
+    marginLeft: '5.5%',
+    color: 'white',
   },
   passwordContainer: {
     color: 'black',
-    marginLeft: '14.5%',
-    width: '86.5%',
+    marginLeft: '5%',
+    width: '95%',
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
@@ -137,6 +138,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     paddingLeft: 8,
+    color: 'white',
   },
   iconContainer: {
     padding: 8,
