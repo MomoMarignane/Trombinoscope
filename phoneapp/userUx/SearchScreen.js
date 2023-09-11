@@ -91,19 +91,13 @@ const SearchScreen = () => {
           {
             searchText !== '' ? (
               filteredUsers.map((user, index) => (
-                <View key={user.id} style={{ flex: 1 }}>
-                  <Image
-                    source={{ uri: user.imageUri.toString() }}
-                    // onError={(e) => console.log("Erreur de chargement d'image", e)}
-                    style={{ width: 150, height: 150, borderRadius: 70, top: 30, left: 6}}
-                    />
-                  <Text key={index} style={styles.userItem}>
-                    {user.name}
-                    {'\n'}
-                    {user.surname}
-                    {'\n'}
-                    {user.email}
-                  </Text>
+                <View style={styles.cardContainer} key={user.id}>
+                  <View style={styles.card}>
+                    <Image source={{ uri: user.imageUri.toString() }} style={{ width: 150, height: 150, borderRadius: 75 }} />
+                    <Text style={styles.name}>{user.name}</Text>
+                    <Text style={styles.age}>{user.email} email: </Text>
+                    <Text style={styles.age}>{user.surname} surname: </Text>
+                  </View>
                 </View>
               ))) : null
             }
@@ -158,6 +152,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.15)',
     // minHeight: '100%',
   },
+
+  cardContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    //height:
+  },
+
+  card: {
+    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    borderRadius: 10,
+    //height: '0%',
+    width: '0%',
+    padding: 50,
+    marginBottom: 170,
+  },
+
 });
 
 export default SearchScreen;
