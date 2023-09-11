@@ -53,7 +53,7 @@ export default function SignInScreen() {
         <Text style={styles.title}>Connexion</Text>
         <View style={styles.contentContainer}>
         <TextInput
-          style={[styles.input, { color: 'white' }]}
+          style={[styles.input, { color: 'rgba(255, 255, 255, 0.9)' }]}
           placeholder="Mail"
           placeholderTextColor="rgba(255, 255, 255, 0.4)"
           onChangeText={(text) => setEmail(text)}
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingLeft: 8,
     marginLeft: '5.5%',
-    color: 'white',
+    color: 'rgba(255, 255, 255, 0.9)',
   },
   passwordContainer: {
     color: 'black',

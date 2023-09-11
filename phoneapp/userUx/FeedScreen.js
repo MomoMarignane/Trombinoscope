@@ -197,14 +197,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 16,
-    width: '45%', // Largeur de 45% pour laisser de l'espace entre les widgets
+    height: 190,
+    width: 190, // Largeur de 45% pour laisser de l'espace entre les widgets
     margin: 5, // Marge entre les widgets
+    left: 6,
   },
   mapsWidget: {
+    left: 6,
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 16,
-    width: '45%', // Largeur de 45% pour laisser de l'espace entre les widgets
+    height: 190,
+    width: 190, // Largeur de 45% pour laisser de l'espace entre les widgets
     margin: 5, // Marge entre les widgets
   },
   weatherText: {
