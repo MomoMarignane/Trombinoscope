@@ -30,7 +30,7 @@ const MeteoButton = ({ onPress }) => {
       });
   };
 
-  const buttonColor = isClicked ? 'red' : 'green';
+  const buttonColor = isClicked ? 'green' : 'blue';
 
   return (
     <TouchableOpacity onPress={handlePress} style={[styles.button, { backgroundColor: buttonColor }]}>

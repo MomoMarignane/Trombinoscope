@@ -54,15 +54,16 @@ const ProfileScreen = () => {
         {userData ? (
           <>
             {imageData && (
-              <View>
+              <View style={{backgroundColor: 'rgba(255, 244, 255, 0.3)', borderRadius: 10, top: 30, width: 130, height: 130, left: 3, padding: 5.5}}>
                 <Image source={{ uri: imageData }} style={styles.image} />
               </View>
             )}
             <Text style={styles.surname}>{userData.surname} {userData.name}</Text>
             <View style={styles.genderContainer}>
-            <Icon name="user" size={20} color="black" style={styles.genderIcon} />
+            <Icon name="user" size={35} color="black" style={styles.genderIcon} />
               <View style = {{
-              borderColor: 'black',
+                backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                borderColor: 'black',
               borderRadius: 15,
               borderWidth : 3,
               width: '100%',
@@ -76,7 +77,7 @@ const ProfileScreen = () => {
               </View>
             </View>
             <View style={styles.emailContainer}>
-              <Icon name="envelope" size={20} color="black" style={styles.emailIcon}/>
+              <Icon name="envelope" size={30} color="black" style={styles.emailIcon}/>
               <View style = {{
               borderColor: 'black',
               borderRadius: 15,
@@ -85,13 +86,14 @@ const ProfileScreen = () => {
               left : 50,
               justifyContent: 'center',
               alignItems: 'center',
+              backgroundColor: 'rgba(255, 255, 255, 0.6)',
               height: '100%',
             }}>
               <Text style={styles.emailText}>{userData.email}</Text>
               </View>
             </View>
             <View style={styles.birthdayContainer}>
-            <Icon name="birthday-cake" size={20} color="black" style={styles.birthdayIcon}/>
+            <Icon name="birthday-cake" size={30} color="black" style={styles.birthdayIcon}/>
             <View style = {{
               borderColor: 'black',
               borderRadius: 15,
@@ -101,13 +103,14 @@ const ProfileScreen = () => {
               alignItems: 'center',
               height: '100%',
               left : 50,
+              backgroundColor: 'rgba(255, 255, 255, 0.6)',
               // backgroundColor : "red",
             }}>
             <Text style={styles.birthdayText}>{userData.birth_date}</Text>
             </View>
             </View>
             <View style={styles.workContainer}>
-            <Icon name="briefcase" size={18} color="black" style={styles.workIcon} />
+            <Icon name="briefcase" size={30} color="black" style={styles.workIcon} />
             <View style = {{
               borderColor: 'black',
               borderRadius: 15,
@@ -115,7 +118,7 @@ const ProfileScreen = () => {
               width: '100%',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0.7)',
+              backgroundColor: 'rgba(255, 255, 255, 0.6)',
               height: '100%',
               // backgroundColor : "blue",
             }}>
@@ -125,7 +128,7 @@ const ProfileScreen = () => {
             <View>
               {userData.subordinates.length === 0 ? (
                 <View style={styles.subordinatesContainer}>
-                  <Icon name="group" size={18} color="black" style={styles.subordinatesIcon} />
+                  <Icon name="group" size={30} color="black" style={styles.subordinatesIcon} />
                   <View style={{
                   borderColor: 'black',
                   borderRadius: 15,
@@ -133,7 +136,7 @@ const ProfileScreen = () => {
                   width: '75%',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                  backgroundColor: 'rgba(255, 255, 255, 0.6)',
                   height: '60%',
                   left : 53,
                   }}>
@@ -145,7 +148,7 @@ const ProfileScreen = () => {
               ) : (
                 userData.subordinates.map((subordinate, index) => (
                   <View style={styles.subordinatesContainer} key={index}>
-                    <Icon name="group" size={18} color="black" style={styles.subordinatesIcon} />
+                    <Icon name="group" size={30} color="black" style={styles.subordinatesIcon} />
                     <View style={styles.subordinatesTextContainer}>
                       <Text style={styles.subordinatesText}>{`Subordinates: ${subordinate}`}</Text>
                     </View>
@@ -173,14 +176,14 @@ const styles = StyleSheet.create({
     marginBottom: '40%',
     height: '20%',
     borderRadius: 30,
-    backgroundColor: 'rgba(10, 10, 50, 0.5)',
+    backgroundColor: 'rgba(10, 10, 50, 0.6)',
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    backgroundColor: 'rgba(60, 38, 80, 0.15)',
   },
   backgroundImage: {
     flex: 1,
@@ -192,20 +195,19 @@ const styles = StyleSheet.create({
   image: {
     width: 120,
     height: 120,
-    borderRadius: 60,
-    top: '25%',
+    borderRadius: 40,
   },
   surname: {
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     top: '7%',
-    // marginBottom: 20,
+    color: 'rgba(255, 255, 255, 0.8)',
   },
   genderContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    left : -120,
+    left : -85,
     // backgroundColor : 'yellow',
     top : 30,
     marginTop: 50,
@@ -214,9 +216,8 @@ const styles = StyleSheet.create({
     height : '7.5%',
   },
   genderIcon: {
-    left : 4,
+    left : 27,
     marginRight: 5,
-    marginLeft: 5,
   },
   genderText: {
     fontSize: 18,
@@ -234,7 +235,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-    left: -41,
+    right: 70,
     width : '60%',
     height : '7.5%',
     top : 45,
@@ -247,13 +248,13 @@ const styles = StyleSheet.create({
   },
   emailIcon: {
     marginRight: 5,
-    marginLeft: 5,
+    left : 25,
   },
   birthdayContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-    left : -90,
+    left : -78,
     width : '35%',
     height : '7.5%',
     top : 58,
@@ -261,12 +262,13 @@ const styles = StyleSheet.create({
   },
   birthdayIcon: {
     marginRight: 5,
-    marginLeft: 5,
+    left: 25,
   },
   birthdayTextContainer: {
     backgroundColor: 'white',
     padding: 5,
     borderRadius: 5,
+
   },
   birthdayText: {
     fontSize: 18,
@@ -280,15 +282,14 @@ const styles = StyleSheet.create({
   workContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    // backgroundColor: 'red',
     width : '55%',
     height : '7.5%',
     top : 70,
+    right: 27,
   },
   workIcon: {
-    left : -51,
+    left : -25,
     marginRight: 5,
-    marginLeft: 5,
   },
   workText: {
     fontSize: 18,
@@ -303,11 +304,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     top : 80,
+    right: 38,
   },
   subordinatesIcon: {
-    left : 3.5,
+    left : 32,
     marginRight: 5,
-    marginLeft: 5,
   },
   subordinatesTextContainer: {
     padding: 5,

@@ -34,7 +34,7 @@ const SettingsScreen = () => {
     // Trigger a right swipe animation
     Animated.timing(animation, {
       toValue: 1,
-      duration: 500, // Adjust the duration of the animation
+      duration: 300, // Adjust the duration of the animation
       easing: Easing.linear,
       useNativeDriver: false, // Important: You must set this to false for transform animations
     }).start(() => {
@@ -50,7 +50,7 @@ const SettingsScreen = () => {
     // Trigger a left swipe animation
     Animated.timing(animation, {
       toValue: -1,
-      duration: 500, // Adjust the duration of the animation
+      duration: 300, // Adjust the duration of the animation
       easing: Easing.linear,
       useNativeDriver: false, // Important: You must set this to false for transform animations
     }).start(() => {
@@ -110,7 +110,7 @@ const SettingsScreen = () => {
     //setCurrentIndex(currentIndex + 1); // Use modulo to loop
   };
 
- 
+
 
   return (
     <ImageBackground source={require('../assets/backgroundApp.png')} style={{ flex: 1 }}>
@@ -143,25 +143,11 @@ const SettingsScreen = () => {
             <Text>Like</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.title}>Settings</Text>
         {/* Add your settings content here */}
       </View>
 
       {/* Bottom toolbar */}
-      <View style={styles.bottomButtonsContainer}>
-        <TouchableOpacity style={styles.imageButton}>
-          {/* Add your icon or text for the first button */}
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.imageButton}>
-          {/* Add your icon or text for the second button */}
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.imageButton}>
-          {/* Add your icon or text for the third button */}
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.imageButton}>
-          {/* Add your icon or text for the fourth button */}
-        </TouchableOpacity>
-      </View>
+
     </ImageBackground>
   );
 };
@@ -190,7 +176,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     width: '90%',
-    height: '90%',
+    height: '70%',
     borderRadius: 20, // Added border radius to make the card more visually appealing
   },
   image: {

@@ -214,8 +214,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start', // Commence à gauche
   },
   weatherWidget: {
-    backgroundColor: 'white',
-    borderRadius: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    borderRadius: 25,
     padding: 16,
     height: 190,
     width: 190, // Largeur de 45% pour laisser de l'espace entre les widgets
@@ -224,8 +224,8 @@ const styles = StyleSheet.create({
   },
   mapsWidget: {
     left: 6,
-    backgroundColor: 'white',
-    borderRadius: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    borderRadius: 25,
     padding: 16,
     height: 190,
     width: 190, // Largeur de 45% pour laisser de l'espace entre les widgets

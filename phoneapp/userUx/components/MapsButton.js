@@ -29,7 +29,7 @@ const MapsButton = ({ onPress, setShowMapsText }) => {
       });
   };
 
-  const buttonColor = isClicked ? 'red' : 'green';
+  const buttonColor = isClicked ? 'green' : 'blue';
 
   return (
     <TouchableOpacity onPress={handlePress} style={[styles.button, { backgroundColor: buttonColor }]}>
