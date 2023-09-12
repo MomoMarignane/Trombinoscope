@@ -21,8 +21,8 @@ const FeedScreen = () => {
 
   const location = {
     coords: {
-      latitude: 48.8566, // Latitude de Paris (exemple)
-      longitude: 2.3522, // Longitude de Paris (exemple)
+      latitude: 43.296482,
+      longitude: 5.369780,
     },
   };
 
