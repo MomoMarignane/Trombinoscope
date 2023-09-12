@@ -4,6 +4,7 @@ import axios from 'axios';
 import MeteoButton from './components/MeteoButton';
 import MapsButton from './components/MapsButton';
 import fetchWeatherData from './API/CallWeatherApi';
+import MapView, { Marker } from 'react-native-maps';
 
 const FeedScreen = () => {
   const [currentDateTime, setCurrentDateTime] = useState('');
@@ -17,6 +18,13 @@ const FeedScreen = () => {
   const [showMapsText, setShowMapsText] = useState(false);
   const [userCity, setUserCity] = useState('');
   const [isCityModalVisible, setIsCityModalVisible] = useState(false);
+
+  const location = {
+    coords: {
+      latitude: 48.8566, // Latitude de Paris (exemple)
+      longitude: 2.3522, // Longitude de Paris (exemple)
+    },
+  };
 
   const handleAddAPI = () => {
     setIsModalVisible(true);
@@ -80,7 +88,19 @@ const FeedScreen = () => {
           )}
           {showMapsText && (
             <View style={styles.mapsWidget}>
-              <Text>Map</Text>
+              <MapView
+              style={{ width: '100%', height: '100%', borderRadius: 15}}
+              initialRegion={{
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+              }}>
+                <Marker coordinate={{
+                  latitude: location.coords.latitude,
+                  longitude: location.coords.longitude,
+                }} />
+              </MapView>
             </View>
           )}
         </View>

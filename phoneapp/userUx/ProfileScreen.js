@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 
 const ProfileScreen = () => {
+  Icon.loadFont(); // Chargez la police FontAwesome
   const [userData, setUserData] = useState({ subordinates: [] });
   const [imageData, setImageData] = useState(null);
 
@@ -26,8 +28,7 @@ const ProfileScreen = () => {
     };
 
     const fetchUserImg = async (userData) => {
-      const path =
-      `https://masurao.fr/api/employees/${userData.id}/image`;
+      const path = `https://masurao.fr/api/employees/${userData.id}/image`;
       try {
         await axios.get(path, {
           headers: {
@@ -47,34 +48,114 @@ const ProfileScreen = () => {
   }, []);
 
   return (
+    <ImageBackground source={require('../assets/backgroundApp.png')} style={styles.backgroundImage}>
     <View style={styles.container}>
       {userData ? (
         <>
-          <Text style={styles.name}>{userData.name}</Text>
-          <Text style={styles.surname}>{`Surname: ${userData.surname}`}</Text>
           {imageData && (
             <View>
               <Image source={{ uri: imageData }} style={styles.image} />
             </View>
           )}
-          <Text style={styles.gender}>Gender{'\n'}{userData.gender}</Text>
-          <Text style={styles.email}>E-mail user{'\n'}{userData.email}</Text>
-          <Text style={styles.age}>{`Birthday\n${userData.birth_date}`}</Text>
-          <Text style={styles.work}>Working in{'\n'}{userData.work}</Text>
+          <Text style={styles.surname}>{userData.surname} {userData.name}</Text>
+          <View style={styles.genderContainer}>
+          <Icon name="user" size={20} color="black" style={styles.genderIcon} />
+            <View style = {{
+            borderColor: 'black',
+            borderRadius: 15,
+            borderWidth : 3,
+            width: '100%',
+            left : 27,
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            marginLeft : 30,
+          }}>
+          <Text style={styles.genderText}>{userData.gender}</Text>
+            </View>
+          </View>
+          <View style={styles.emailContainer}>
+            <Icon name="envelope" size={20} color="black" style={styles.emailIcon}/>
+            <View style = {{
+            borderColor: 'black',
+            borderRadius: 15,
+            borderWidth : 3,
+            width: '100%',
+            left : 50,
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+          }}>
+            <Text style={styles.emailText}>{userData.email}</Text>
+            </View>
+          </View>
+          <View style={styles.birthdayContainer}>
+          <Icon name="birthday-cake" size={20} color="black" style={styles.birthdayIcon}/>
+          <View style = {{
+            borderColor: 'black',
+            borderRadius: 15,
+            borderWidth : 3,
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            left : 50,
+            // backgroundColor : "red",
+          }}>
+          <Text style={styles.birthdayText}>{userData.birth_date}</Text>
+          </View>
+          </View>
+          <View style={styles.workContainer}>
+          <Icon name="briefcase" size={18} color="black" style={styles.workIcon} />
+          <View style = {{
+            borderColor: 'black',
+            borderRadius: 15,
+            borderWidth : 3,
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            // backgroundColor : "blue",
+          }}>
+          <Text style={styles.workText}>{userData.work}</Text>
+          </View>
+          </View>
           <View>
             {userData.subordinates.length === 0 ? (
-              <Text style={styles.noSubordinates}>No subordinates found.</Text>
+              <View style={styles.subordinatesContainer}>
+                <Icon name="group" size={18} color="black" style={styles.subordinatesIcon} />
+                <View style={{
+                borderColor: 'black',
+                borderRadius: 15,
+                borderWidth : 3,
+                width: '75%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '60%',
+                left : 53,
+                }}>
+                <View style={styles.subordinatesTextContainer}>
+                  <Text style={styles.subordinatesText}>No subordinates found.</Text>
+                </View>
+                </View>
+              </View>
             ) : (
               userData.subordinates.map((subordinate, index) => (
-                <Text style={styles.subordinates} key={index}>Subordinates: {subordinate}</Text>
+                <View style={styles.subordinatesContainer} key={index}>
+                  <Icon name="group" size={18} color="black" style={styles.subordinatesIcon} />
+                  <View style={styles.subordinatesTextContainer}>
+                    <Text style={styles.subordinatesText}>{`Subordinates: ${subordinate}`}</Text>
+                  </View>
+                </View>
               ))
-            )}
+              )}
           </View>
         </>
       ) : (
         <Text>Loading...</Text>
       )}
     </View>
+    </ImageBackground>
   );
 };
 
@@ -84,57 +165,137 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    backgroundColor: 'grey',
+    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+  },
+  backgroundImage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
   },
   image: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    bottom: 160,
-    justifyContent: 'center',
-  },
-  name: {
-    bottom: 150,
-    fontSize: 35,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  email: {
-    fontSize: 25,
-    textAlign: 'center',
-    bottom: 140,
-  },
-  age: {
-    bottom: 125,
-    fontSize: 25,
-    textAlign: 'center',
   },
   surname: {
-    top: 3,
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
+    // marginBottom: 20,
+  },
+  genderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    left : -120,
+    // backgroundColor : 'yellow',
+    marginTop: 50,
+    marginBottom: 10,
+    width : '20%',
+    height : '7.5%',
+  },
+  genderIcon: {
+    left : 4,
+    marginRight: 5,
+    marginLeft: 5,
+  },
+  genderText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+    // backgroundColor: 'white',
   },
   gender: {
-    top: '6%',
-    fontSize: 25,
+    fontSize: 18,
     textAlign: 'center',
-  },
-  work: {
     bottom: 40,
-    fontSize: 25,
+    // marginBottom: 15,
+  },
+  emailContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    left: -41,
+    width : '60%',
+    height : '7.5%',
+    // backgroundColor: 'blue',
+  },
+  emailText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  emailIcon: {
+    marginRight: 5,
+    marginLeft: 5,
+  },
+  birthdayContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    left : -90,
+    width : '35%',
+    height : '7.5%',
+    // backgroundColor: 'green',
+  },
+  birthdayIcon: {
+    marginRight: 5,
+    marginLeft: 5,
+  },
+  birthdayTextContainer: {
+    backgroundColor: 'white',
+    padding: 5,
+    borderRadius: 5,
+  },
+  birthdayText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  age: {
+    fontSize: 18,
     textAlign: 'center',
+    },
+  workContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // backgroundColor: 'red',
+    width : '55%',
+    height : '7.5%',
+  },
+  workIcon: {
+    left : -51,
+    marginRight: 5,
+    marginLeft: 5,
+  },
+  workText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
   },
   noSubordinates: {
-    top: '-9%',
-    fontSize: 25,
+    fontSize: 18,
     textAlign: 'center',
   },
-  subordinates: {
-    top: '20%',
-    fontSize: 25,
-    textAlign: 'center',
-  }
+  subordinatesContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  subordinatesIcon: {
+    left : 3.5,
+    marginRight: 5,
+    marginLeft: 5,
+  },
+  subordinatesTextContainer: {
+    padding: 5,
+    borderRadius: 5,
+  },
+  subordinatesText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+  },
 });
 
 export default ProfileScreen;
