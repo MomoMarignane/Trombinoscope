@@ -115,6 +115,7 @@ const ProfileScreen = () => {
               width: '100%',
               justifyContent: 'center',
               alignItems: 'center',
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
               height: '100%',
               // backgroundColor : "blue",
             }}>
@@ -132,6 +133,7 @@ const ProfileScreen = () => {
                   width: '75%',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  backgroundColor: 'rgba(255, 0, 0, 0.5)',
                   height: '60%',
                   left : 53,
                   }}>
