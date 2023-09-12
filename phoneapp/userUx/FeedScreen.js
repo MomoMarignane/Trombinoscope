@@ -74,7 +74,7 @@ const FeedScreen = () => {
    >
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleAddAPI}>
-        <Text style={styles.buttonText}>Add Widget 📲</Text>
+        <Text style={styles.buttonText}>add Widget 📲</Text>
       </TouchableOpacity>
       <ScrollView>
         <View style={styles.widgetsContainer}>
