@@ -54,7 +54,7 @@ const ProfileScreen = () => {
         {userData ? (
           <>
             {imageData && (
-              <View style={{backgroundColor: 'rgba(255, 244, 255, 0.3)', borderRadius: 10, top: 30, width: 130, height: 130, left: 3, padding: 5.5}}>
+              <View style={{backgroundColor: 'rgba(255, 244, 255, 0.3)', borderRadius: 15, top: 30, width: 130, height: 130, left: 3, padding: 5.5}}>
                 <Image source={{ uri: imageData }} style={styles.image} />
               </View>
             )}

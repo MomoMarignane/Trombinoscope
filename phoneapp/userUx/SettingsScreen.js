@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image, Animated, Easing } from 'react-native';
 import axios from 'axios';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 const SettingsScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(1);
@@ -34,38 +35,28 @@ const SettingsScreen = () => {
     // Trigger a right swipe animation
     Animated.timing(animation, {
       toValue: 1,
-      duration: 300, // Adjust the duration of the animation
+      duration: 300,
       easing: Easing.linear,
-      useNativeDriver: false, // Important: You must set this to false for transform animations
+      useNativeDriver: false,
     }).start(() => {
-      // Animation is complete, you can perform any additional actions here
       handleDislike();
-      animation.resetAnimation(); // Call handleDislike after the animation is complete
+      animation.resetAnimation();
     });
-    //Animated.reset();
-
   };
 
   const handleSwipeLeft = () => {
-    // Trigger a left swipe animation
     Animated.timing(animation, {
       toValue: -1,
-      duration: 300, // Adjust the duration of the animation
+      duration: 300,
       easing: Easing.linear,
-      useNativeDriver: false, // Important: You must set this to false for transform animations
+      useNativeDriver: false,
     }).start(() => {
-      // Animation is complete, you can perform any additional actions here
       handleDislike();
       animation.resetAnimation();
-       // Call handleDislike after the animation is complete
     });
-    //animation.reset();
   };
 
   const handleDislike = () => {
-    // Handle the "Dislike" action here
-    // You can send a request to your server or update the UI
-    // For this example, we'll just move to the next profile
     console.log(currentIndex);
     axios
       .get('https://masurao.fr/api/employees/' + (currentIndex + 1), {
@@ -111,28 +102,34 @@ const SettingsScreen = () => {
   };
 
 
-
   return (
     <ImageBackground source={require('../assets/backgroundApp.png')} style={{ flex: 1 }}>
       <View style={styles.container_discovery}>
         {profiles && (
           <Animated.View style={[styles.card, cardStyle]}>
+            <View style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', height: 230, top: 130, width: 340, borderRadius: 15}}>
             <Image style={styles.image} source={{ uri: imageData }} />
+            <FontAwesome5Icon name="user" style={{bottom: 249.5, fontSize: 30, left: 11}} />
             {profiles.name && (
-              <Text style={styles.name}>{profiles.name}, {profiles.age}</Text>
-            )}
-            {profiles.gender && profiles.work && (
-              <Text style={styles.details}>{profiles.gender} - {profiles.work}</Text>
-            )}
+              <Text style={styles.name}>{profiles.name} {profiles.age}</Text>
+              )}
+            <FontAwesome5Icon name="venus-mars" style={[{bottom: 270, color: 'rgba(255, 255, 255, 0.6)'}, styles.icon]} />
+            {profiles.gender && (
+              <Text style={{bottom: 297, fontSize: 26, textAlign: 'center', color: 'rgba(255, 255, 255, 0.7)'}}>{profiles.gender}</Text>
+              )}
+            <FontAwesome5Icon name="briefcase" style={[{bottom: 275.5, color: 'rgba(255, 255, 255, 0.6)'}, styles.icon]} />
+            {profiles.work && (
+              <Text style={{bottom: 305, fontSize: 26, textAlign: 'center', color: 'rgba(255, 255, 255, 0.7)'}}>{profiles.work}</Text>
+              )}
+            <FontAwesome5Icon name="envelope" style={[{bottom: 279, color: 'rgba(255, 255, 255, 0.6)'}, styles.icon]} />
             {profiles.email && (
-              <Text style={styles.details}>{profiles.email}</Text>
-            )}
+              <Text style={{bottom: 305, fontSize: 24, textAlign: 'center', color: 'rgba(255, 255, 255, 0.7)'}}>{profiles.email}</Text>
+              )}
+              <FontAwesome5Icon name="birthday-cake" style={[{bottom: 279, color: 'rgba(255, 255, 255, 0.9)'}, styles.icon]} />
             {profiles.birth_date && (
-              <Text style={styles.details}>Birth Date: {profiles.birth_date}</Text>
-            )}
-            {profiles.subordinates && profiles.subordinates.length > 0 && currentIndex !== 1 && (
-              <Text style={styles.details}>Subordinates: {profiles.subordinates.join(', ')}</Text>
-            )}
+              <Text style={{bottom: 302, fontSize: 26, textAlign: 'center', color: 'rgba(255, 255, 255, 0.7)'}}>{profiles.birth_date}</Text>
+              )}
+              </View>
           </Animated.View>
         )}
         <View style={styles.actions}>
@@ -143,11 +140,7 @@ const SettingsScreen = () => {
             <Text>Like</Text>
           </TouchableOpacity>
         </View>
-        {/* Add your settings content here */}
       </View>
-
-      {/* Bottom toolbar */}
-
     </ImageBackground>
   );
 };
@@ -171,7 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   card: {
-    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    backgroundColor: 'rgba(10, 10, 50, 0.6)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -183,22 +176,21 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    marginBottom: 10, // Separation between image and profile details
+    bottom: 280,
+    left: 70,
   },
   name: {
-    fontSize: 24,
+    fontSize: 44,
     fontWeight: 'bold',
     marginVertical: 10,
-  },
-  details: {
-    fontSize: 20,
-    marginBottom: 5, // Added margin to separate details
+    bottom: 295,
+    textAlign: 'center',
   },
   actions: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 50,
   },
   dislikeButton: {
     backgroundColor: 'red',
@@ -211,6 +203,10 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 50,
     marginHorizontal: 20,
+  },
+  icon: {
+    fontSize: 25,
+    left: 8,
   },
 });
 

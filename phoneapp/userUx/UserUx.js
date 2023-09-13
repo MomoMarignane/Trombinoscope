@@ -37,7 +37,7 @@ const TabNavigator = () => {
           } else if (route.name === 'Search') {
             iconName = 'search-outline';
           } else if (route.name === 'Paramètres') {
-            iconName = 'settings-outline';
+            iconName = 'people-circle-outline';
           }
 
           return <Ionicons name={iconName} color={color} size={size} style={iconStyle}/>;

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TouchableW
 import axios from 'axios';
 import MeteoButton from './components/MeteoButton';
 import MapsButton from './components/MapsButton';
+import BistroButton from './components/BistroButton';
 import fetchWeatherData from './API/CallWeatherApi';
 import MapView, { Marker } from 'react-native-maps';
 
@@ -56,6 +57,21 @@ const FeedScreen = () => {
     } else if (widgetType === 'Maps') {
       setMapsClicked(!mapsClicked);
       setShowMapsText(!mapsClicked);
+    } else if (widgetType == 'Bistro') {
+      setMapsClicked(!mapsClicked);
+
+    }
+  };
+
+  const handleBistroSelection = async (widgetType) => {
+    if (widgetType === 'Météo') {
+      try {
+         setIsClicked(!isClicked);
+      } catch (error) {
+        console.error('Error fetching weather data', error);
+      }
+    } else if (widgetType === 'Maps') {
+
     }
   };
 
@@ -117,6 +133,7 @@ const FeedScreen = () => {
               <Text style={styles.titleWidget}>Select Widgets:</Text>
               <MeteoButton onPress={() => handleWidgetSelection('Météo')} />
               <MapsButton onPress={() => handleWidgetSelection('Maps')} setShowMapsText={setShowMapsText} />
+              <BistroButton onPress={() => handleBistroSelection('Bistro')} setShowMapsText={setShowMapsText} />
             </View>
           </View>
         </TouchableWithoutFeedback>
