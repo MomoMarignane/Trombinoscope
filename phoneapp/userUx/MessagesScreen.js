@@ -3,7 +3,9 @@ import { View, Text, StyleSheet, FlatList, ImageBackground, TouchableOpacity } f
 import { ref, onValue, getDatabase } from 'firebase/database';
 import { initializeApp } from "firebase/app";
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import TalkingScreen from './TalkingScreen';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAen2RafQ1J31a5yocRTBKQ-q2XrKD7Ym4",
@@ -46,6 +48,17 @@ const MessagesScreen = () => {
     >
       <View style={styles.container}>
         <Text style={styles.title}>Messages</Text>
+        <View style={{backgroundColor: 'black', top: 13, left: 20}}>
+
+        <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('TalkingScreen');
+            }}
+            style={styles.sendMessageButton}
+          >
+            <FontAwesomeIcon name="plus-circle" size={40} color="rgba(0, 0, 255, 0.6)" style={{}} />
+          </TouchableOpacity>
+          </View>
         <FlatList
           data={messages}
           keyExtractor={(item) => item.timestamp.toString()}
@@ -78,6 +91,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 22,
     marginTop: 15,
+    bottom: 5,
     textAlign: 'center', // Centrer le titre
   },
   messageContainer: {
@@ -92,6 +106,17 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 16,
+  },
+  sendMessageButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Couleur de fond du bouton
+    borderRadius: 30, // Assurez-vous qu'il s'agit d'un cercle pour un aspect Apple-like
+    width: 60, // Largeur du bouton
+    height: 60, // Hauteur du bouton
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

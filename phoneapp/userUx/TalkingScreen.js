@@ -39,6 +39,7 @@ const TalkingScreen = () => {
     if (messageText.trim() !== '') {
       // Envoyez le message à la base de données Firebase
       push(ref(db, 'messages'), {
+        senderName: 'Me',
         text: messageText,
         timestamp: Date.now(),
       });
