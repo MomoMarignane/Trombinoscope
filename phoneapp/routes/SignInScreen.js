@@ -37,7 +37,7 @@ export default function SignInScreen() {
           }
         );
         window.token = response.data.access_token;
-        navigation.navigate('userux', { token: response.data.access_token });
+        navigation.navigate('loadingpage', { token: response.data.access_token });
     } catch (error) {
         console.error('Front error: ', error);
     }

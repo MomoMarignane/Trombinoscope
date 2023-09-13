@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './home/HomeScreen';
 import SignInScreen from './routes/SignInScreen';
 import UserUx from './userUx/UserUx';
+import LoadingPage from './routes/Screenapp';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,13 @@ export default function App() {
         <Stack.Screen
           name="userux"
           component={UserUx}
+          options={{
+              headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="loadingpage"
+          component={LoadingPage}
           options={{
               headerShown: false,
           }}
