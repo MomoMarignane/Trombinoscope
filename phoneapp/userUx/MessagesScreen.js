@@ -56,7 +56,7 @@ const MessagesScreen = () => {
             }}
             style={styles.sendMessageButton}
           >
-            <FontAwesomeIcon name="plus-circle" size={40} color="rgba(0, 0, 255, 0.6)" style={{}} />
+            <FontAwesomeIcon name="plus-circle" size={45} color="rgba(0, 0, 255, 0.6)" style={{}} />
           </TouchableOpacity>
           </View>
         <FlatList
@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     right: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Couleur de fond du bouton
-    borderRadius: 30, // Assurez-vous qu'il s'agit d'un cercle pour un aspect Apple-like
+    backgroundColor: 'rgba(0, 0, 0, 0.25)', // Couleur de fond du bouton
+    borderRadius: 20, // Assurez-vous qu'il s'agit d'un cercle pour un aspect Apple-like
     width: 60, // Largeur du bouton
     height: 60, // Hauteur du bouton
     justifyContent: 'center',
