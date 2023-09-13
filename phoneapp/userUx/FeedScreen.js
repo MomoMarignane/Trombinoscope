@@ -14,6 +14,7 @@ const FeedScreen = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [mapsClicked, setMapsClicked] = useState(false);
   const [weatherData, setWeatherData] = useState(null);
+  const [Calculette, setCalculetteClicked] = useState(false);
   const [city, setCity] = useState('Marseille');
   const [showWeatherText, setShowWeatherText] = useState(false);
   const [showMapsText, setShowMapsText] = useState(false);
@@ -57,16 +58,13 @@ const FeedScreen = () => {
     } else if (widgetType === 'Maps') {
       setMapsClicked(!mapsClicked);
       setShowMapsText(!mapsClicked);
-    } else if (widgetType == 'Bistro') {
-      setMapsClicked(!mapsClicked);
-
     }
   };
 
   const handleBistroSelection = async (widgetType) => {
-    if (widgetType === 'Météo') {
+    if (widgetType === 'Bistro') {
       try {
-         setIsClicked(!isClicked);
+         setCalculetteClicked(!Calculette);
       } catch (error) {
         console.error('Error fetching weather data', error);
       }
@@ -133,7 +131,7 @@ const FeedScreen = () => {
               <Text style={styles.titleWidget}>Select Widgets:</Text>
               <MeteoButton onPress={() => handleWidgetSelection('Météo')} />
               <MapsButton onPress={() => handleWidgetSelection('Maps')} setShowMapsText={setShowMapsText} />
-              <BistroButton onPress={() => handleBistroSelection('Bistro')} setShowMapsText={setShowMapsText} />
+              <BistroButton onPress={() => handleBistroSelection('Bistro')}/>
             </View>
           </View>
         </TouchableWithoutFeedback>

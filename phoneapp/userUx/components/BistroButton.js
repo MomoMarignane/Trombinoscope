@@ -33,7 +33,7 @@ const BistroButton = ({ onPress, setShowMapsText }) => {
 
   return (
     <TouchableOpacity onPress={handlePress} style={[styles.button, { backgroundColor: buttonColor }]}>
-      <Text style={styles.buttonText}>Calculatruce</Text>
+      <Text style={styles.buttonText}>Calculatrice</Text>
     </TouchableOpacity>
   );
 };

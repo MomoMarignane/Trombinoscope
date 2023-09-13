@@ -49,6 +49,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Widget" component={FeedScreen} options={{ tabBarLabel: '' }}/>
       <Tab.Screen name="Search" component={NotificationsScreen} options={{ tabBarLabel: '' }}/>
       <Tab.Screen name="Paramètres" component={SettingsScreen} options={{ tabBarLabel: '' }}/>
+
       </Tab.Navigator>
   );
 };

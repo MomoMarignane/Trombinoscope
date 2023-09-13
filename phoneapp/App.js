@@ -5,6 +5,7 @@ import HomeScreen from './home/HomeScreen';
 import SignInScreen from './routes/SignInScreen';
 import UserUx from './userUx/UserUx';
 import LoadingPage from './routes/Screenapp';
+import TalkingScreen from './userUx/TalkingScreen';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,13 @@ export default function App() {
         <Stack.Screen
           name="loadingpage"
           component={LoadingPage}
+          options={{
+              headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="TalkingScreen"
+          component={TalkingScreen}
           options={{
               headerShown: false,
           }}
