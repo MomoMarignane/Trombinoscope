@@ -6,6 +6,44 @@ import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 const SettingsScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [imageData, setImageData] = useState(null);
+
+      if (currentIndex == 1) { //load the first profile
+        console.log('first ' + currentIndex);
+        axios
+          .get('https://masurao.fr/api/employees/' + (currentIndex + 1), {
+            headers: {
+              'accept': 'application/json',
+              'X-Group-Authorization': 'kwK0fbWlgTGII7SKHn4_4ua7dKZ9pbNF',
+              'Authorization': 'Bearer ' + window.token,
+            },
+          })
+          .then(function (response) {
+            setProfiles(response.data);
+            console.log('profiles: ' + profiles.subordinates.length);
+            console.log('resp: ' + response.data.birthdate);
+            axios
+              .get('https://masurao.fr/api/employees/' + (currentIndex + 1) + '/image', {
+                responseType: 'arraybuffer',
+                headers: {
+                  'accept': 'application/json',
+                  'X-Group-Authorization': 'kwK0fbWlgTGII7SKHn4_4ua7dKZ9pbNF',
+                  'Authorization': 'Bearer ' + window.token,
+                },
+              })
+              .then(function (response) {
+                setImageData('https://masurao.fr/api/employees/' + (currentIndex + 1) + '/image');
+                // console.log('https://masurao.fr/api/employees/' + (currentIndex + 1) + '/image');
+              })
+              .catch(function (error) {
+                console.log('Error', error);
+              });
+          })
+          .catch(function (error) {
+            console.log('Error', error);
+          });
+        setCurrentIndex(currentIndex + 1); // Use modulo to loop
+      }
+
   const [profiles, setProfiles] = useState({
     id: 1,
     email: '',
