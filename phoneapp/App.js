@@ -6,7 +6,9 @@ import SignInScreen from './routes/SignInScreen';
 import UserUx from './userUx/UserUx';
 import LoadingPage from './routes/Screenapp';
 import TalkingScreen from './userUx/TalkingScreen';
+import firebaseApp from './config/firebaseConfig';
 import MessagesScreen from './userUx/MessagesScreen';
+import DatabaseScreen from './userUx/TalkingScreen';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +36,7 @@ export default function App() {
           options={{
               headerShown: false,
           }}
+          initialParams={{ firebaseApp }}
         />
         <Stack.Screen
           name="loadingpage"
@@ -44,7 +47,7 @@ export default function App() {
         />
         <Stack.Screen
           name="TalkingScreen"
-          component={TalkingScreen}
+          component={DatabaseScreen}
           options={{
               headerShown: false,
           }}

@@ -1,25 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, FlatList } from 'react-native';
 import { ref, push, getDatabase } from 'firebase/database';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
+import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 // Initialisez Firebase avec votre configuration
 
 // Initialisez Firebase avec votre configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBV_qECIERIu3VHc0_kTALyaE9C4G8_KuU",
-  authDomain: "trombini-a427c.firebaseapp.com",
-  databaseURL: "https://trombini-a427c-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "trombini-a427c",
-  storageBucket: "trombini-a427c.appspot.com",
-  messagingSenderId: "1056795330352",
-  appId: "1:1056795330352:web:a800882adaaa743ea76af5",
-  measurementId: "G-VBVF8M8XJD"
-};
 
 const MessagesScreen = () => {
+  const route = useRoute();
+  const { firebaseApp } = route.params;
   const [message, setMessage] = useState('');
   const [recipientID, setRecipientID] = useState('');
   const [userID, setUserID] = useState(null);
@@ -28,12 +22,13 @@ const MessagesScreen = () => {
   const [user, setUser] = useState(null);
 
   // Initialisez Firebase avec la configuration
-  if (!firebase.apps.length) {
-    initializeApp(firebaseConfig);
-  }
+  // if (!firebase.apps.length) {
+  //   initializeApp(firebaseApp);
+  // }
 
   const auth = getAuth();
   const db = getDatabase();
+  const navigation = useNavigation();
 
   useEffect(() => {
     // Vérifiez si l'utilisateur est déjà connecté
@@ -56,6 +51,9 @@ const MessagesScreen = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const currentUser = userCredential.user;
       setUser(currentUser);
+
+      // Redirigez l'utilisateur vers DatabaseScreen (TalkingScreen) après la connexion
+      navigation.navigate('TalkingScreen'); // Assurez-vous d'avoir la bonne clé d'écran ici
     } catch (error) {
       console.error('Erreur lors de la connexion :', error);
     }
@@ -142,7 +140,6 @@ const MessagesScreen = () => {
             secureTextEntry
           />
           <Button title="Se connecter" onPress={signIn} />
-          <Text style={styles.title}>Inscription</Text>
           <Button title="S'inscrire" onPress={signUp} />
         </>
       )}
