@@ -6,6 +6,7 @@ import SignInScreen from './routes/SignInScreen';
 import UserUx from './userUx/UserUx';
 import LoadingPage from './routes/Screenapp';
 import TalkingScreen from './userUx/TalkingScreen';
+import MessagesScreen from './userUx/MessagesScreen';
 
 const Stack = createStackNavigator();
 

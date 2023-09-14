@@ -1,220 +1,173 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ImageBackground,
-  TouchableOpacity,
-  Modal,
-  TextInput,
-  Button,
-} from 'react-native';
-import { ref, onValue, getDatabase } from 'firebase/database';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { ref, push, getDatabase } from 'firebase/database';
 import { initializeApp } from 'firebase/app';
-import { useNavigation } from '@react-navigation/native';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import firebase from 'firebase/compat/app';
 
+// Initialisez Firebase avec votre configuration
+
+// Initialisez Firebase avec votre configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAen2RafQ1J31a5yocRTBKQ-q2XrKD7Ym4",
-  authDomain: "messagerieepitech.firebaseapp.com",
-  databaseURL: "https://messagerieepitech-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "messagerieepitech",
-  storageBucket: "messagerieepitech.appspot.com",
-  messagingSenderId: "179932330242",
-  appId: "1:179932330242:web:46b19eecb35327e2776a1b",
-  measurementId: "G-ZRCRSS9TJ5"
+  apiKey: "AIzaSyBV_qECIERIu3VHc0_kTALyaE9C4G8_KuU",
+  authDomain: "trombini-a427c.firebaseapp.com",
+  databaseURL: "https://trombini-a427c-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "trombini-a427c",
+  storageBucket: "trombini-a427c.appspot.com",
+  messagingSenderId: "1056795330352",
+  appId: "1:1056795330352:web:a800882adaaa743ea76af5",
+  measurementId: "G-VBVF8M8XJD"
 };
 
-const app = initializeApp(firebaseConfig);
-
 const MessagesScreen = () => {
-  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState('');
+  const [recipientID, setRecipientID] = useState('');
+  const [userID, setUserID] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [newSenderName, setNewSenderName] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null); // Ajout de l'état selectedItem
 
-  const db = getDatabase();
-  const navigation = useNavigation();
+  // Initialisez Firebase avec la configuration
+  if (!firebase.apps.length) {
+    initializeApp(firebaseConfig);
+  }
+
   const auth = getAuth();
+  const db = getDatabase();
 
   useEffect(() => {
-    const messagesRef = ref(db, 'messages');
-    const unsubscribe = onValue(messagesRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const messageList = Object.values(data);
-        setMessages(messageList);
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [db]);
-
-  useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+    // Vérifiez si l'utilisateur est déjà connecté
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+        // L'utilisateur est connecté, vous pouvez accéder à user.uid ici
         setUser(user);
       } else {
+        // L'utilisateur n'est pas connecté
         setUser(null);
       }
     });
 
-    return () => {
-      unsubscribeAuth();
-    };
-  }, [auth]);
+    // Assurez-vous de vous désabonner lorsque le composant est démonté
+    return () => unsubscribe();
+  }, []);
 
-  const loginUser = async () => {
+  const signIn = async () => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        'ugdfrtb@masurao.jp',
-        'password'
-      );
-      const user = userCredential.user;
-      setUser(user);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const currentUser = userCredential.user;
+      setUser(currentUser);
     } catch (error) {
-      console.error('Erreur de connexion : ', error);
+      console.error('Erreur lors de la connexion :', error);
     }
   };
 
-  const handleModalSubmit = () => {
-    if (selectedItem) {
-      // Mettez à jour selectedItem.senderName avec le nouveau nom saisi
-      const newItem = { ...selectedItem, senderName: newSenderName };
-      navigation.navigate('TalkingScreen', { item: newItem });
-      setIsModalVisible(false);
+  const signUp = async () => {
+    try {
+      // Créez un compte avec l'e-mail et le mot de passe prédéfinis par le développeur
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const currentUser = userCredential.user;
+      setUser(currentUser);
+      setUserID(currentUser.uid); // Stockez l'ID de l'utilisateur ici
+    } catch (error) {
+      console.error('Erreur lors de la création du compte :', error);
+    }
+  };
+
+  const sendMessage = async () => {
+    // Vérifiez si le message et l'ID du destinataire sont saisis
+    if (message && recipientID) {
+      try {
+        // Vérifiez si l'utilisateur est connecté
+        if (auth.currentUser) {
+          // Si l'utilisateur est connecté, obtenez son UID
+          const currentUser = auth.currentUser;
+          const currentUserID = currentUser.uid;
+          setUserID(currentUserID);
+
+          // Créez une nouvelle référence pour le message
+          const messageRef = push(ref(db, `messages/${recipientID}`), {
+            text: message,
+            senderID: currentUserID,
+            timestamp: Date.now(),
+          });
+
+          // Effacez le champ de texte après l'envoi
+          setMessage('');
+        } else {
+          console.error('L\'utilisateur n\'est pas connecté.');
+        }
+      } catch (error) {
+        console.error('Erreur lors de l\'envoi du message :', error);
+      }
+    } else {
+      console.error('Le message ou l\'ID du destinataire est manquant.');
     }
   };
 
   return (
-    <ImageBackground source={require('../assets/backgroundApp.png')} style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Messages</Text>
-        <View style={{ backgroundColor: 'black', top: 13, left: 20 }}>
-          {user ? (
-            <TouchableOpacity
-              onPress={() => {
-                setIsModalVisible(true);
-              }}
-              style={styles.sendMessageButton}
-            >
-              <FontAwesomeIcon name="plus-circle" size={45} color="rgba(0, 0, 255, 0.55)" />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={loginUser} style={styles.loginButton}>
-              <Text style={styles.loginButtonText}>Se connecter</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-        <FlatList
-          data={messages}
-          keyExtractor={(item) => item.timestamp.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                setSelectedItem(item); // Mettre à jour selectedItem
-                setIsModalVisible(true); // Ouvrir le modal pour modifier le nom
-              }}
-            >
-              <View style={styles.messageContainer}>
-                <Text style={styles.senderName}>
-                  <Text style={{ fontWeight: 'bold' }}>{item.senderName}: </Text>
-                  <Text>{item.text}</Text>
-                </Text>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-      </View>
-      <Modal visible={isModalVisible} animationType="slide">
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Entrez le nom de l'expéditeur :</Text>
+    <View style={styles.container}>
+      {user ? (
+        // L'utilisateur est connecté, affichez le formulaire d'envoi de message
+        <>
+          <Text style={styles.title}>Envoyer un Message Privé</Text>
           <TextInput
-            style={styles.modalInput}
-            placeholder="Nom"
-            value={newSenderName}
-            onChangeText={(text) => setNewSenderName(text)}
+            style={styles.input}
+            placeholder="Entrez votre message"
+            value={message}
+            onChangeText={(text) => setMessage(text)}
           />
-          <Button title="Valider" onPress={handleModalSubmit} />
-        </View>
-      </Modal>
-    </ImageBackground>
+          <TextInput
+            style={styles.input}
+            placeholder="ID du Destinataire"
+            value={recipientID}
+            onChangeText={(text) => setRecipientID(text)}
+          />
+          <Button title="Envoyer" onPress={sendMessage} />
+        </>
+      ) : (
+        // L'utilisateur n'est pas connecté, affichez le formulaire de connexion et d'inscription
+        <>
+          <Text style={styles.title}>Connexion</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Mot de passe"
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry
+          />
+          <Button title="Se connecter" onPress={signIn} />
+          <Text style={styles.title}>Inscription</Text>
+          <Button title="S'inscrire" onPress={signUp} />
+        </>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 22,
-    marginTop: 15,
-    bottom: 5,
-    textAlign: 'center',
+    marginBottom: 20,
   },
-  messageContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 8,
-    padding: 8,
-    marginVertical: 4,
-  },
-  senderName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  messageText: {
-    fontSize: 16,
-  },
-  sendMessageButton: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-    borderRadius: 20,
-    width: 60,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loginButton: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-    borderRadius: 20,
-    width: 120,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loginButtonText: {
-    color: 'white',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 24,
-    marginBottom: 16,
-  },
-  modalInput: {
+  input: {
     width: '80%',
-    borderWidth: 1,
+    height: 40,
     borderColor: 'gray',
-    padding: 8,
-    marginBottom: 16,
+    borderWidth: 1,
+    marginBottom: 20,
+    paddingLeft: 10,
   },
 });
 

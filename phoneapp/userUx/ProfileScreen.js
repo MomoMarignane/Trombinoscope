@@ -15,7 +15,7 @@ const ProfileScreen = () => {
           'https://masurao.fr/api/employees/me',
           {
             headers: {
-              'X-Group-Authorization': 'kwK0fbWlgTGII7SKHn4_4ua7dKZ9pbNF',
+              'X-Group-Authorization': 'eea91ccb2471865fb7ba3b96b138815c',
               'Authorization': 'Bearer ' + window.token,
             },
           });
@@ -33,7 +33,7 @@ const ProfileScreen = () => {
         await axios.get(path, {
           headers: {
             'accept': 'image/png',
-            'X-Group-Authorization': 'kwK0fbWlgTGII7SKHn4_4ua7dKZ9pbNF',
+            'X-Group-Authorization': 'eea91ccb2471865fb7ba3b96b138815c',
             'Authorization': 'Bearer ' + window.token,
           },
           responseType: 'arraybuffer',

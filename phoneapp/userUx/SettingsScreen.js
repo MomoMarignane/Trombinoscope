@@ -13,7 +13,7 @@ const SettingsScreen = () => {
           .get('https://masurao.fr/api/employees/' + (currentIndex + 1), {
             headers: {
               'accept': 'application/json',
-              'X-Group-Authorization': 'kwK0fbWlgTGII7SKHn4_4ua7dKZ9pbNF',
+              'X-Group-Authorization': 'eea91ccb2471865fb7ba3b96b138815cF',
               'Authorization': 'Bearer ' + window.token,
             },
           })
@@ -26,7 +26,7 @@ const SettingsScreen = () => {
                 responseType: 'arraybuffer',
                 headers: {
                   'accept': 'application/json',
-                  'X-Group-Authorization': 'kwK0fbWlgTGII7SKHn4_4ua7dKZ9pbNF',
+                  'X-Group-Authorization': 'eea91ccb2471865fb7ba3b96b138815cF',
                   'Authorization': 'Bearer ' + window.token,
                 },
               })
@@ -100,7 +100,7 @@ const SettingsScreen = () => {
       .get('https://masurao.fr/api/employees/' + (currentIndex + 1), {
         headers: {
           'accept': 'application/json',
-          'X-Group-Authorization': 'kwK0fbWlgTGII7SKHn4_4ua7dKZ9pbNF',
+          'X-Group-Authorization': 'eea91ccb2471865fb7ba3b96b138815cF',
           'Authorization': 'Bearer ' + window.token,
         },
       })
@@ -113,7 +113,7 @@ const SettingsScreen = () => {
             responseType: 'arraybuffer',
             headers: {
               'accept': 'application/json',
-              'X-Group-Authorization': 'kwK0fbWlgTGII7SKHn4_4ua7dKZ9pbNF',
+              'X-Group-Authorization': 'eea91ccb2471865fb7ba3b96b138815cF',
               'Authorization': 'Bearer ' + window.token,
             },
           })
