@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, ImageBackground, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { ref, push, onValue, getDatabase, remove } from 'firebase/database'; // Importez remove pour supprimer un message
 import { initializeApp } from "firebase/app"; // Importez initializeApp directement
-import { getAnalytics } from "firebase/analytics";
+import { useRoute } from '@react-navigation/native';
+import { getAuth } from 'firebase/auth'; // Importez getAuth pour accéder à l'utilisateur actuel
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 // Votre configuration Firebase
@@ -23,6 +24,9 @@ const TalkingScreen = () => {
   const [messageText, setMessageText] = useState('');
   const [messages, setMessages] = useState([]);
   const db = getDatabase(); // Utilisez getDatabase pour accéder à la base de données Firebase
+  const route = useRoute();
+  const item = route.params.item;
+  const auth = getAuth(); // Accédez à l'utilisateur actuel
 
   useEffect(() => {
     // Écoutez les modifications de la base de données Firebase en temps réel
@@ -37,13 +41,21 @@ const TalkingScreen = () => {
 
   const sendMessage = () => {
     if (messageText.trim() !== '') {
-      // Envoyez le message à la base de données Firebase
-      push(ref(db, 'messages'), {
-        senderName: 'Me',
-        text: messageText,
-        timestamp: Date.now(),
-      });
-      setMessageText('');
+      // Assurez-vous que l'utilisateur est connecté
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        // Envoyez le message à la base de données Firebase avec senderUid
+        push(ref(db, 'messages'), {
+          senderUid: currentUser.uid, // Utilisez l'ID de l'utilisateur actuel
+          senderName: item.senderName,
+          text: messageText,
+          timestamp: Date.now(),
+        });
+        setMessageText('');
+      } else {
+        // Gérez le cas où l'utilisateur n'est pas connecté
+        console.error('L\'utilisateur n\'est pas connecté.');
+      }
     }
   };
 
@@ -62,7 +74,6 @@ const TalkingScreen = () => {
   return (
     <ImageBackground
     source={require('../assets/backgroundApp.png')} // Spécifiez le chemin de votre image
-    style={{ flex: 1, position: 'fixed'}}
    >
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <KeyboardAvoidingView
@@ -71,12 +82,13 @@ const TalkingScreen = () => {
       keyboardVerticalOffset={Platform.select({ ios: 60, android: 50 })} // Ajustez la valeur selon vos besoins
     >
     <View style={styles.container}>
-      <Text style={styles.title}>Messages</Text>
+      <Text style={styles.title}>{item.senderName}</Text>
       <FlatList
         data={messages}
         keyExtractor={(item) => item.timestamp.toString()}
         renderItem={({ item }) => (
           <View style={styles.messageContainer}>
+            <Text style={styles.messageText}>{item.senderUid}</Text>
             <Text style={styles.messageText}>{item.text}</Text>
             <TouchableOpacity
               style={styles.deleteButton}
@@ -111,15 +123,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    top: 500,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 22,
-    top: 15,
+    top: 65,
   },
   messageContainer: {
-    top: 18,
+    top: 68,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: 8,
     padding: 8,

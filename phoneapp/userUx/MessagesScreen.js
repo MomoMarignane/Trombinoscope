@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ImageBackground, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ImageBackground,
+  TouchableOpacity,
+  Modal,
+  TextInput,
+  Button,
+} from 'react-native';
 import { ref, onValue, getDatabase } from 'firebase/database';
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import TalkingScreen from './TalkingScreen';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAen2RafQ1J31a5yocRTBKQ-q2XrKD7Ym4",
@@ -22,8 +31,14 @@ const app = initializeApp(firebaseConfig);
 
 const MessagesScreen = () => {
   const [messages, setMessages] = useState([]);
+  const [user, setUser] = useState(null);
+  const [newSenderName, setNewSenderName] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null); // Ajout de l'état selectedItem
+
   const db = getDatabase();
   const navigation = useNavigation();
+  const auth = getAuth();
 
   useEffect(() => {
     const messagesRef = ref(db, 'messages');
@@ -35,47 +50,100 @@ const MessagesScreen = () => {
       }
     });
 
-    // Nettoyez le gestionnaire d'abonnement lors du démontage du composant
     return () => {
       unsubscribe();
     };
   }, [db]);
 
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => {
+      unsubscribeAuth();
+    };
+  }, [auth]);
+
+  const loginUser = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        'ugdfrtb@masurao.jp',
+        'password'
+      );
+      const user = userCredential.user;
+      setUser(user);
+    } catch (error) {
+      console.error('Erreur de connexion : ', error);
+    }
+  };
+
+  const handleModalSubmit = () => {
+    if (selectedItem) {
+      // Mettez à jour selectedItem.senderName avec le nouveau nom saisi
+      const newItem = { ...selectedItem, senderName: newSenderName };
+      navigation.navigate('TalkingScreen', { item: newItem });
+      setIsModalVisible(false);
+    }
+  };
+
   return (
-    <ImageBackground
-      source={require('../assets/backgroundApp.png')}
-      style={{ flex: 1 }}
-    >
+    <ImageBackground source={require('../assets/backgroundApp.png')} style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text style={styles.title}>Messages</Text>
-        <View style={{backgroundColor: 'black', top: 13, left: 20}}>
-
-        <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('TalkingScreen');
-            }}
-            style={styles.sendMessageButton}
-          >
-            <FontAwesomeIcon name="plus-circle" size={45} color="rgba(0, 0, 255, 0.6)" style={{}} />
-          </TouchableOpacity>
-          </View>
+        <View style={{ backgroundColor: 'black', top: 13, left: 20 }}>
+          {user ? (
+            <TouchableOpacity
+              onPress={() => {
+                setIsModalVisible(true);
+              }}
+              style={styles.sendMessageButton}
+            >
+              <FontAwesomeIcon name="plus-circle" size={45} color="rgba(0, 0, 255, 0.55)" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={loginUser} style={styles.loginButton}>
+              <Text style={styles.loginButtonText}>Se connecter</Text>
+            </TouchableOpacity>
+          )}
+        </View>
         <FlatList
           data={messages}
           keyExtractor={(item) => item.timestamp.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('TalkingScreen', { item });
+                setSelectedItem(item); // Mettre à jour selectedItem
+                setIsModalVisible(true); // Ouvrir le modal pour modifier le nom
               }}
             >
               <View style={styles.messageContainer}>
-                <Text style={styles.senderName}>{item.senderName}</Text>
-                <Text style={styles.messageText}>{item.text}</Text>
+                <Text style={styles.senderName}>
+                  <Text style={{ fontWeight: 'bold' }}>{item.senderName}: </Text>
+                  <Text>{item.text}</Text>
+                </Text>
               </View>
             </TouchableOpacity>
           )}
         />
       </View>
+      <Modal visible={isModalVisible} animationType="slide">
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>Entrez le nom de l'expéditeur :</Text>
+          <TextInput
+            style={styles.modalInput}
+            placeholder="Nom"
+            value={newSenderName}
+            onChangeText={(text) => setNewSenderName(text)}
+          />
+          <Button title="Valider" onPress={handleModalSubmit} />
+        </View>
+      </Modal>
     </ImageBackground>
   );
 };
@@ -92,7 +160,7 @@ const styles = StyleSheet.create({
     marginBottom: 22,
     marginTop: 15,
     bottom: 5,
-    textAlign: 'center', // Centrer le titre
+    textAlign: 'center',
   },
   messageContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -111,12 +179,42 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     right: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.25)', // Couleur de fond du bouton
-    borderRadius: 20, // Assurez-vous qu'il s'agit d'un cercle pour un aspect Apple-like
-    width: 60, // Largeur du bouton
-    height: 60, // Hauteur du bouton
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    borderRadius: 20,
+    width: 60,
+    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loginButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    borderRadius: 20,
+    width: 120,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loginButtonText: {
+    color: 'white',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 24,
+    marginBottom: 16,
+  },
+  modalInput: {
+    width: '80%',
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 8,
+    marginBottom: 16,
   },
 });
 
