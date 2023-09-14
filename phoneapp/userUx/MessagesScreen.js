@@ -71,6 +71,10 @@ const MessagesScreen = () => {
     }
   };
 
+  const NavigateIntoConversations = async () => {
+    navigation.navigate('TalkingScreen');
+  }
+
   const sendMessage = async () => {
     // Vérifiez si le message et l'ID du destinataire sont saisis
     if (message && recipientID) {
@@ -121,6 +125,7 @@ const MessagesScreen = () => {
             onChangeText={(text) => setRecipientID(text)}
           />
           <Button title="Envoyer" onPress={sendMessage} />
+          <Button title="Voir vos conversations" onPress={NavigateIntoConversations} />
         </>
       ) : (
         // L'utilisateur n'est pas connecté, affichez le formulaire de connexion et d'inscription
