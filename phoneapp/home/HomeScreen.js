@@ -25,6 +25,12 @@ export default function HomeScreen() {
     extrapolate: 'clamp',
   });
 
+  const textSizeLogin = scrollY.interpolate({
+    inputRange: [0, 850, 900],
+    outputRange: [20, 10, 10],
+    extrapolate: 'clamp',
+  });
+
   return (
   <ImageBackground
     source={require('../assets/backgroundApp.png')} // Spécifiez le chemin de votre image
@@ -43,6 +49,9 @@ export default function HomeScreen() {
     <Animated.View style={[styles.parallaxText, { opacity: textOpacity }]}>
       <Animated.Text style={[{ fontSize: textSize }, styles.infoText]}>
           Welcome to Trombini !{'\n'}The future of business experience.
+      </Animated.Text>
+      <Animated.Text style={[{ fontSize: textSizeLogin }, styles.infoTextLogin]}>
+          Swipe up for login 👆
       </Animated.Text>
     </Animated.View>
     <Animated.View style={[{ opacity: signInOpacity }]}>
@@ -71,8 +80,17 @@ const styles = StyleSheet.create({
     width: 400,
     marginTop: '50%',
     fontSize: 40,
-    color: 'rgba(60, 0, 8, 1)',
+    color: 'rgba(60, 0, 8, 0.8)',
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  infoTextLogin: {
+    width: 400,
+    marginTop: '50%',
+    fontSize: 20,
+    color: 'rgba(60, 0, 8, 0.8)',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    top: 250,
   },
 });
