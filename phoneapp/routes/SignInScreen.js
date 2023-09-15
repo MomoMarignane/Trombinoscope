@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   contentContainer: {
-    backgroundColor: 'rgba(60, 38, 80, 0.9)',
+    backgroundColor: 'rgba(60, 0, 8, 0.7)',
     borderRadius: 20,
     padding: 16,
     width: '77%',
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginTop: '450%',
     marginBottom: '5%',
-    color: 'rgba(60, 38, 80, 1))',
+    color: 'rgba(60, 0, 8, 1)',
     fontWeight: 'bold',
     textAlign: 'center',
     textTransform: 'uppercase',

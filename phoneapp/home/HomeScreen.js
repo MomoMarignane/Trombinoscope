@@ -42,7 +42,7 @@ export default function HomeScreen() {
 
     <Animated.View style={[styles.parallaxText, { opacity: textOpacity }]}>
       <Animated.Text style={[{ fontSize: textSize }, styles.infoText]}>
-        Welcome to Trombini !{'\n'}The future of business experience.
+          Welcome to Trombini !{'\n'}The future of business experience.
       </Animated.Text>
     </Animated.View>
     <Animated.View style={[{ opacity: signInOpacity }]}>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     width: 400,
     marginTop: '50%',
     fontSize: 40,
-    color: 'rgba(60, 38, 80, 1)',
+    color: 'rgba(60, 0, 8, 1)',
     textAlign: 'center',
     fontWeight: 'bold',
   },
