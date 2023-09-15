@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native'; // Importez la fonction de navigation
 
 const ProfileScreen = () => {
   Icon.loadFont(); // Chargez la police FontAwesome
   const [userData, setUserData] = useState({ subordinates: [] });
   const [imageData, setImageData] = useState(null);
+  const navigation = useNavigation(); // Initialisez la navigation
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -47,6 +49,11 @@ const ProfileScreen = () => {
     fetchUserData();
   }, []);
 
+  const handleLogout = () => {
+    // Naviguez vers l'écran du menu principal (home)
+    navigation.navigate('TROMBINI'); // Assurez-vous que 'Home' est le nom de l'écran du menu principal dans votre navigation
+  };
+
   return (
     <ImageBackground
     style={styles.backgroundImage}>
@@ -55,7 +62,7 @@ const ProfileScreen = () => {
         {userData ? (
           <>
             {imageData && (
-              <View style={{backgroundColor: 'rgba(255, 244, 255, 0.3)', borderRadius: 15, top: 30, width: 130, height: 130, left: 3, padding: 5.5}}>
+              <View style={{backgroundColor: 'rgba(255, 244, 255, 0.3)', borderRadius: 15, top: 38, width: 130, height: 130, left: 3, padding: 5.5}}>
                 <Image source={{ uri: imageData }} style={styles.image} />
               </View>
             )}
@@ -161,6 +168,9 @@ const ProfileScreen = () => {
         ) : (
           <Text>Loading...</Text>
         )}
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+          <Text style={styles.logoutButtonText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </View>
     </ImageBackground>
@@ -203,7 +213,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
-    top: '7%',
+    top: 50,
     color: 'rgba(255, 255, 255, 0.8)',
   },
   genderContainer: {
@@ -320,6 +330,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'black',
+  },
+  logoutButton: {
+    backgroundColor: 'red', // Couleur du bouton de déconnexion (personnalisez selon vos besoins)
+    padding: 10,
+    borderRadius: 5,
+    top: 65,
+  },
+  logoutButtonText: {
+    color: 'white', // Couleur du texte du bouton de déconnexion (personnalisez selon vos besoins)
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
