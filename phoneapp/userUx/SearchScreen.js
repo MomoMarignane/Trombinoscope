@@ -82,8 +82,7 @@ const SearchScreen = () => {
 
   return (
     <ImageBackground
-      source={require('../assets/backgroundApp.png')}
-      style={{ flex: 1, position: 'fixed' }}
+      style={{ flex: 1, backgroundColor: 'rgba(94, 0, 0, 0.6)' }}
     >
       <ScrollView
         style={styles.userList}
@@ -169,7 +168,6 @@ const styles = StyleSheet.create({
   },
   userList: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.15)',
   },
   cardContainer: {
     flex: 1,
@@ -177,7 +175,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     borderRadius: 25,
     width: 375,
     height: 133,

@@ -141,7 +141,7 @@ const SettingsScreen = () => {
 
 
   return (
-    <ImageBackground source={require('../assets/backgroundApp.png')} style={{ flex: 1 }}>
+    <ImageBackground style={{ flex: 1, backgroundColor: 'rgba(94, 0, 0, 0.6)' }}>
       <View style={styles.container_discovery}>
         {profiles && (
           <Animated.View style={[styles.card, cardStyle]}>

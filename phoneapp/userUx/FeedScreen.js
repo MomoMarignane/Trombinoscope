@@ -83,8 +83,7 @@ const FeedScreen = () => {
 
   return (
     <ImageBackground
-    source={require('../assets/backgroundApp.png')}
-    style={{ flex: 1, position: 'fixed'}}
+    style={{ flex: 1, backgroundColor: 'rgba(94, 0, 0, 0.6)'}}
    >
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleAddAPI}>
@@ -184,10 +183,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.15)',
   },
   button: {
-    backgroundColor: 'rgba(60, 38, 80, 0.8)',
+    backgroundColor: 'rgba(60, 38, 80, 0.9)',
     paddingTop: 20,
     paddingLeft: 18,
     borderRadius: 15,

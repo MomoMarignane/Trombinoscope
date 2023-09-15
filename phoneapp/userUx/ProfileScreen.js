@@ -48,7 +48,8 @@ const ProfileScreen = () => {
   }, []);
 
   return (
-    <ImageBackground source={require('../assets/backgroundApp.png')} style={styles.backgroundImage}>
+    <ImageBackground
+    style={styles.backgroundImage}>
     <View style={styles.container}>
       <View style={styles.container2}>
         {userData ? (
@@ -191,6 +192,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
+    backgroundColor: 'rgba(94, 0, 0, 0.6)',
   },
   image: {
     width: 120,

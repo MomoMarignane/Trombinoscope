@@ -20,6 +20,7 @@ const MessagesScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+  const [userName, setUserName] = useState('');
 
   // Initialisez Firebase avec la configuration
   // if (!firebase.apps.length) {
@@ -29,6 +30,7 @@ const MessagesScreen = () => {
   const auth = getAuth();
   const db = getDatabase();
   const navigation = useNavigation();
+
 
   useEffect(() => {
     // Vérifiez si l'utilisateur est déjà connecté
@@ -53,7 +55,7 @@ const MessagesScreen = () => {
       setUser(currentUser);
 
       // Redirigez l'utilisateur vers DatabaseScreen (TalkingScreen) après la connexion
-      navigation.navigate('TalkingScreen'); // Assurez-vous d'avoir la bonne clé d'écran ici
+      navigation.navigate('TalkingScreen', { userName: userName }); // Assurez-vous Xd'avoir la bonne clé d'écran ici
     } catch (error) {
       console.error('Erreur lors de la connexion :', error);
     }
@@ -72,7 +74,7 @@ const MessagesScreen = () => {
   };
 
   const NavigateIntoConversations = async () => {
-    navigation.navigate('TalkingScreen');
+    navigation.navigate('TalkingScreen', { userName: userName });
   }
 
   const sendMessage = async () => {
@@ -133,6 +135,12 @@ const MessagesScreen = () => {
           <Text style={styles.title}>Connexion</Text>
           <TextInput
             style={styles.input}
+            placeholder="Nom d'utilisateur"
+            value={userName}
+            onChangeText={(text) => setUserName(text)}
+          />
+          <TextInput
+            style={styles.input}
             placeholder="Email"
             value={email}
             onChangeText={(text) => setEmail(text)}
@@ -157,6 +165,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(94, 0, 0, 0.6)',
   },
   title: {
     fontSize: 24,
@@ -166,7 +175,7 @@ const styles = StyleSheet.create({
   input: {
     width: '80%',
     height: 40,
-    borderColor: 'gray',
+    borderColor: 'rgba(0, 0, 0, 1)',
     borderWidth: 1,
     marginBottom: 20,
     paddingLeft: 10,
